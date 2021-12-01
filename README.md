@@ -41,7 +41,7 @@ Deep Learning model used:
 CountVectorizer Logistic  Regression 
 
 * 76% Accuracy 
-* 66% F1-score (macro)  
+* 67% F1-score (macro)  
 
 DistilBERT model
 
