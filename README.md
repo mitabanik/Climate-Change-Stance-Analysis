@@ -2,7 +2,15 @@
 
 Twitter is one of the most popular social media platforms for sharing information on a variety of issues including politics, economics, science, and pop culture.
 Climate change is an issue of relevant interest to many people from different spheres; however it has also become a very polarizing topic. In recent times a significant amount of opinions about climate change are formed in Twitter, using tweets is it possible to quantify the inherent biases present among people of opposite belief systems and further can one effectively distinguish climate change stances using NLP and ML techniques. Understanding the public’s stance on climate issues could be of interest to a variety of stakeholders such as policy makers, climate activists, private companies, and scientists. Therefore, accurately predicting the stance on climate change from tweets could help our leaders make better policy decisions and help combat the spread of misinformation and confusion among the public.
- 
+
+# Summary 
+* data_raw - folder that contains the data that was extracted from twitter;
+* data_utils.py and tt_scrapper - extract twitter messages; 
+* Exploratory Data Analysis - exploratory analysis of data from Edward Qian (github username:edwardcqian);
+* ML_models  - machine learning models used;
+* Transformers - Pretrained Bidirectional Encoder Representations (BERT) model from Transformers.
+
+
 # Goals
 Create a stance classification algorithm to help distinguish the negative/neutral/positive climate change tweets. 
 
