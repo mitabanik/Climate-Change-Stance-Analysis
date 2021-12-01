@@ -6,13 +6,15 @@ import snscrape.modules.twitter as sntwitter
 import itertools
 import pandas as pd
 import datetime
-from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 nltk.download('words')
 words = set(nltk.corpus.words.words())
 
-def search (word,since,until,near):
-    return word+' '+'since:'+since+' '+'until:'+until+' '+'near:'+near
+def search_city (word,since,until,near):
+    return word+' '+'since:'+since+' '+'until:'+until+' '+'near:'+near 
+
+def search (word,since,until):
+    return word+' '+'since:'+since+' '+'until:'+until
 
 def get_tweets(query,tt_limits):
     print("Search for:" , (query))
@@ -47,7 +49,7 @@ def deEmojify(text):
     return regrex_pattern.sub(r'', text)
 
 def clean_data(text):
-    c_data= re.sub(r"(?:\|http?\://|https?\://|www)\S+", "", str(text)) 
+    c_data= re.sub(r"(?:\|http?\://|https?\://|www)\S+", "", text.lower()) 
     c_data = re.sub('[0-9]+', '', c_data)
     c_data=" ".join(c_data.split())
     c_data  = "".join([char for char in c_data if char not in string.punctuation])
@@ -68,23 +70,57 @@ def count_hashtag(text):
         
     return hashtags_count  
 
+
 def hashtag_count_value(df):
     hashtags_name=[]
     for i in range(len(df)):
         try:
-            for j in range(len(df['hashtags'][i])):
-                hashtags_name.append(df['hashtags'][i][j])
+            str_hash=df['hashtags'][i].replace('[','').replace(']','')
+            temp=[]
+            for i in range(0,(len(str_hash))):
+                temp2=[]
+                j=1
+                if i+j <len(str_hash):
+                    if str_hash[i]=="'" and str_hash[i+j]!=",":
+                        while str_hash [i+j]!="'":
+                            temp2.append(str_hash[i+j])
+                            j +=1
+                        temp.append(temp2)
+                    else:
+                        pass
+            
+            for i in temp:
+                hashtags_name.append(''.join(i))
         except:
             pass
+  
     my_dict = {i:hashtags_name.count(i) for i in hashtags_name}
     return dict(sorted(my_dict.items(), key=lambda item: item[1], reverse=True))
 
+
 def week_day(date):
     ##### monday =0, sunday=6
-    year, month, day =year, month, day=str(date.date()).split('-')
+    year, month, day =year, month, day=date.strip().split(' ')[0].split('-')
     dow = datetime.date(int(year), int(month), int(day)).weekday()
     return dow
 
-def get_VADER(text):
-    analyzer = SentimentIntensityAnalyzer()
-    return analyzer.polarity_scores(text)['compound']
+def year(date):
+    ##### monday =0, sunday=6
+    year, month, day =year, month, day=date.strip().split(' ')[0].split('-')
+    return year
+
+def month(date):
+    ##### monday =0, sunday=6
+    year, month, day =year, month, day=date.strip().split(' ')[0].split('-')
+    return month
+
+def day(date):
+    ##### monday =0, sunday=6
+    year, month, day =year, month, day=date.strip().split(' ')[0].split('-')
+    return day
+
+def username(text):
+    return text.split(' ')[1].split(',')[0].replace("'",'')
+
+def list_of_words(text):
+    return ''.join(text).split()
